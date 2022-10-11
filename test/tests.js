@@ -1,6 +1,6 @@
 'use strict';
 
-const Acl = require('acl');
+const Acl = require('acl2');
 const assert = require('chai').assert;
 const expect = require('chai').expect;
 

@@ -7,18 +7,18 @@ _acl-sequelize_
 [![Known Vulnerabilities](https://snyk.io/test/npm/acl-sequelize/badge.svg)](https://snyk.io/test/npm/acl-sequelize)
 [![License](https://img.shields.io/npm/l/acl-sequelize.svg?maxAge=2592000?style=plastic)](https://github.com/yonjah/node_acl_sequelize/blob/master/LICENSE)
 
-[Sequelize](https://github.com/sequelize/sequelize) is an SQL ORM that supports many sql servers (mysql, mariadb, sqlite, postgres and mssql) [OptimalBits/node_acl](https://github.com/OptimalBits/node_acl).
+[Sequelize](https://github.com/sequelize/sequelize) is an SQL ORM that supports many sql servers (mysql, mariadb, sqlite, postgres and mssql) [flash-oss/node_acl](https://github.com/flash-oss/node_acl).
 
 ## Features & Documentation
-For ACL general use please see [OptimalBits/node_acl](https://github.com/OptimalBits/node_acl).
-For Sequelize general use please see [Sequelize Docs](http://docs.sequelizejs.com/en/latest/).
+For ACL general, use please see [flash-oss/node_acl](https://github.com/flash-oss/node_acl).
+For Sequelize general, use please see [Sequelize Docs](http://docs.sequelizejs.com/en/latest/).
 
 ## Installation
 
 Using npm:
 
 ```javascript
-npm install acl
+npm install acl2
 npm install sequelize
 npm install [DIALECT] #One of the supported Sequelize dialects
 npm install acl-sequelize
@@ -44,12 +44,11 @@ The second parameter sent to the backend constructor can have supports the follo
 
 ## Creating tables manually
 ACL-Sequelize will automatically register and sync needed schemes
-if for some reason you need to register your own tables and the schema override parameters are not good enough you can register the schemes yourself before instiating the `backend`. ACL-Sequelize will use the existing schema instead of adding a new one (Register schema should follow `prefix`+`bucket_name` convention and have key, value columns)
+if for some reason you need to register your own tables and the schema override parameters are not good enough you can register the schemes yourself before initiating the `backend`. ACL-Sequelize will use the existing schema instead of adding a new one (Register schema should follow `prefix`+`bucket_name` convention and have key, value columns)
 
 ## Testing
 ### Test setup
-The test database connection settings are in the `test/runner.js`.
-The current setting expect a local `mysql` server with passwordless `root` account and `test` database.
+The test database connection settings are in the `test/runner.js`. 
 
 ### Running tests
 ```javascript
@@ -65,6 +64,6 @@ This project participates in the Responsible Disclosure Policy program for the N
 ## Known Issues
 - default schema limit each column 255 chars, if you have a lot of resources / permissions / complex hierarchy, You'll probably need to set your own schema with higher limit.
 - node ACL has a race condition bug I would avoid setting multiple permissions until the [issue](https://github.com/OptimalBits/node_acl/pull/112) is resolved
-- I haven't done any performance tweaks, this can probably be implemented in a much more efficient way using relational schema and JOINS, but I'm note sure node ACL API is flexible enough to make it beneficial 
+- I haven't done any performance tweaks, this can probably be implemented in a much more efficient way using relational schema and JOINS, but I'm not sure node ACL API is flexible enough to make it beneficial 
 
 P.S Thanks for Robert Kaufmann III <rok3@rok3.me> who originally registered the npm module.

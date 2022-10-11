@@ -1,4 +1,7 @@
 'use strict';
+
+const path = require('path');
+
 let tests  = require('./tests'),
     AclSeq = require('../');
 
@@ -9,14 +12,11 @@ describe('Sequelize - Default', () => {
 
     self.backend = new AclSeq(
         new Sequelize(
-          'test',
-          'root',
-          null,
-          {
-            operatorsAliases: false,
-            logging: false,
-            dialect: 'mysql'
-          }
+            '', '', '', {
+                dialect: 'sqlite',
+                logging: false,
+                storage: path.join(__dirname, 'test.sqlite')
+            }
         ), {
           prefix: 'acl_'
         }
