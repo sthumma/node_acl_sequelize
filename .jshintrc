@@ -5,6 +5,7 @@
 	"strict": true,
 	"esversion": 6,
 	"globals"   : {
+		"Promise"   : true,
 		/* MOCHA */
 		"describe"   : false,
 		"it"         : false,

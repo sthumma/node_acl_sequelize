@@ -48,7 +48,7 @@ if for some reason you need to register your own tables and the schema override 
 
 ## Testing
 ### Test setup
-The test database connection settings are in the `test/runner.js`. 
+The test database connection settings are in the `test/runner.js`. The current setting uses sqlite for tests.
 
 ### Running tests
 ```javascript
