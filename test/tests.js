@@ -47,7 +47,7 @@ exports.Allows = function () {
     it('guest to view blogs', function (done) {
       let acl = new Acl(this.backend);
 
-      acl.allow('guest', 'blogs', 'view', err => {
+      acl.allow('guest', 'blogs', 'view').then((res, err) => {
         assert(!err);
         done();
       });
@@ -56,7 +56,7 @@ exports.Allows = function () {
     it('guest to view forums', function (done) {
       let acl = new Acl(this.backend);
 
-      acl.allow('guest', 'forums', 'view', err => {
+      acl.allow('guest', 'forums', 'view').then((res, err) => {
         assert(!err);
         done();
       });
@@ -65,7 +65,7 @@ exports.Allows = function () {
     it('member to view/edit/delete blogs', function (done) {
       let acl = new Acl(this.backend);
 
-      acl.allow('member', 'blogs', ['edit','view', 'delete'], err => {
+      acl.allow('member', 'blogs', ['edit','view', 'delete']).then((res, err) => {
         assert(!err);
         done();
       });
@@ -76,16 +76,16 @@ exports.Allows = function () {
     it('joed => guest, jsmith => member, harry => admin, test@test.com => member', function (done) {
       let acl = new Acl(this.backend);
 
-      acl.addUserRoles('joed', 'guest', err => {
+      acl.addUserRoles('joed', 'guest').then((res, err) => {
         assert(!err);
 
-        acl.addUserRoles('jsmith', 'member', err => {
+        acl.addUserRoles('jsmith', 'member').then((res, err) => {
           assert(!err);
 
-          acl.addUserRoles('harry', 'admin', err => {
+          acl.addUserRoles('harry', 'admin').then((res, err) => {
             assert(!err);
 
-            acl.addUserRoles('test@test.com', 'member', err => {
+            acl.addUserRoles('test@test.com', 'member').then((res, err) => {
               assert(!err);
               done();
             });
@@ -97,13 +97,13 @@ exports.Allows = function () {
     it('0 => guest, 1 => member, 2 => admin', function (done) {
       let acl = new Acl(this.backend);
 
-      acl.addUserRoles(0, 'guest', err => {
+      acl.addUserRoles('0', 'guest').then((res, err) => {
         assert(!err);
 
-        acl.addUserRoles(1, 'member', err => {
+        acl.addUserRoles('1', 'member').then((res, err) => {
           assert(!err);
 
-          acl.addUserRoles(2, 'admin', err => {
+          acl.addUserRoles('2', 'admin').then((res, err) => {
             assert(!err);
             done();
           });
@@ -115,28 +115,27 @@ exports.Allows = function () {
   describe('read User Roles', () => {
     it('run userRoles function', function (done) {
       let acl = new Acl(this.backend);
-      acl.addUserRoles('harry', 'admin', err => {
+      acl.addUserRoles('harry', 'admin').then((res, err) => {
         if (err) {
-return done(err);
-}
+          return done(err);
+        }
 
-        acl.userRoles('harry', (err, roles) => {
+        acl.userRoles('harry').then((roles, err) => {
           if (err) {
-return done(err);
-}
+            return done(err);
+          }
 
           assert.deepEqual(roles, ['admin']);
-          acl.hasRole('harry', 'admin', (err, is_in_role) => {
+          acl.hasRole('harry', 'admin').then((is_in_role, err) => {
             if (err) {
- return done(err);
-}
+              return done(err);
+            }
 
             assert.ok(is_in_role);
-            acl.hasRole('harry', 'no role', (err, is_in_role) => {
+            acl.hasRole('harry', 'no role').then((is_in_role, err) => {
               if (err) {
-return done(err);
-}
-
+                return done(err);
+              }
               assert.notOk(is_in_role);
               done();
             });
@@ -149,18 +148,18 @@ return done(err);
   describe('read Role Users', () => {
     it('run roleUsers function', function (done) {
       let acl = new Acl(this.backend);
-      acl.addUserRoles('harry', 'admin', err => {
+      acl.addUserRoles('harry', 'admin').then((res, err) => {
         if (err) {
-return done(err);
-}
+          return done(err);
+        }
 
-        acl.roleUsers('admin', (err, users) => {
+        acl.roleUsers('admin').then((users, err) => {
           if (err) {
- return done(err);
-}
+            return done(err);
+          }
           assert.include(users, 'harry');
           assert.isFalse('invalid User' in users);
-          done();
+            done();
         });
       });
 
@@ -171,7 +170,7 @@ return done(err);
     it('admin view/add/edit/delete users', function (done) {
       let acl = new Acl(this.backend);
 
-      acl.allow('admin', 'users', ['add','edit','view','delete'], err => {
+      acl.allow('admin', 'users', ['add','edit','view','delete']).then((res, err) => {
         assert(!err);
         done();
       });
@@ -180,7 +179,7 @@ return done(err);
     it('foo view/edit blogs', function (done) {
       let acl = new Acl(this.backend);
 
-      acl.allow('foo', 'blogs', ['edit','view'], err => {
+      acl.allow('foo', 'blogs', ['edit','view']).then((res, err) => {
         assert(!err);
         done();
       });
@@ -189,7 +188,7 @@ return done(err);
     it('bar to view/delete blogs', function (done) {
       let acl = new Acl(this.backend);
 
-      acl.allow('bar', 'blogs', ['view','delete'], err => {
+      acl.allow('bar', 'blogs', ['view','delete']).then((res, err) => {
         assert(!err);
         done();
       });
@@ -200,7 +199,7 @@ return done(err);
     it('add them', function (done) {
       let acl = new Acl(this.backend);
 
-      acl.addRoleParents('baz', ['foo','bar'], err => {
+      acl.addRoleParents('baz', ['foo','bar']).then((res, err) => {
         assert(!err);
         done();
       });
@@ -211,7 +210,7 @@ return done(err);
     it('add them', function (done) {
       let acl = new Acl(this.backend);
 
-      acl.addUserRoles('james', 'baz', err => {
+      acl.addUserRoles('james', 'baz').then((res, err) => {
         assert(!err);
         done();
       });
@@ -219,7 +218,7 @@ return done(err);
     it('add them (numeric userId)', function (done) {
       let acl = new Acl(this.backend);
 
-      acl.addUserRoles(3, 'baz', err => {
+      acl.addUserRoles('3', 'baz').then((res, err) => {
         assert(!err);
         done();
       });
@@ -230,7 +229,7 @@ return done(err);
     it('add them', function (done) {
       let acl = new Acl(this.backend);
 
-      acl.allow('admin', ['blogs', 'forums'], '*', err => {
+      acl.allow('admin', ['blogs', 'forums'], '*').then((res, err) => {
         assert(!err);
         done();
       });
@@ -251,8 +250,7 @@ return done(err);
               {resources:['/path/file/file1.txt','/path/file/file2.txt'], permissions:['get','put','delete']}
             ]
           }
-        ],
-        err => {
+        ]).then((res,err) => {
           assert(!err);
           done();
         }
@@ -263,14 +261,14 @@ return done(err);
   describe('Add fumanchu role to suzanne', () => {
     it('do it', function (done) {
       let acl = new Acl(this.backend);
-      acl.addUserRoles('suzanne', 'fumanchu', err => {
+      acl.addUserRoles('suzanne', 'fumanchu').then((res, err) => {
         assert(!err);
         done();
       });
     });
     it('do it (numeric userId)', function (done) {
       let acl = new Acl(this.backend);
-      acl.addUserRoles(4, 'fumanchu', err => {
+      acl.addUserRoles('4', 'fumanchu').then((res, err) => {
         assert(!err);
         done();
       });
@@ -287,7 +285,7 @@ exports.Allowance = function () {
       it('Can joed view blogs?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('joed', 'blogs', 'view', (err, allow) => {
+        acl.isAllowed('joed', 'blogs', 'view').then((allow, err) => {
           assert(!err);
           assert(allow);
           done();
@@ -297,7 +295,7 @@ exports.Allowance = function () {
       it('Can userId=0 view blogs?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed(0, 'blogs', 'view', (err, allow) => {
+        acl.isAllowed('0', 'blogs', 'view').then((allow, err) => {
           assert(!err);
           assert(allow);
           done();
@@ -307,7 +305,7 @@ exports.Allowance = function () {
       it('Can joed view forums?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('joed', 'forums', 'view', (err, allow) => {
+        acl.isAllowed('joed', 'forums', 'view').then((allow, err) => {
           assert(!err);
           assert(allow);
           done();
@@ -317,7 +315,7 @@ exports.Allowance = function () {
       it('Can userId=0 view forums?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed(0, 'forums', 'view', (err, allow) => {
+        acl.isAllowed('0', 'forums', 'view').then((allow, err) => {
           assert(!err);
           assert(allow);
           done();
@@ -327,7 +325,7 @@ exports.Allowance = function () {
       it('Can joed edit forums?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('joed', 'forums', 'edit', (err, allow) => {
+        acl.isAllowed('joed', 'forums', 'edit').then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -337,7 +335,7 @@ exports.Allowance = function () {
       it('Can userId=0 edit forums?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed(0, 'forums', 'edit', (err, allow) => {
+        acl.isAllowed('0', 'forums', 'edit').then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -347,7 +345,7 @@ exports.Allowance = function () {
       it('Can jsmith edit forums?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('jsmith', 'forums', 'edit', (err, allow) => {
+        acl.isAllowed('jsmith', 'forums', 'edit').then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -357,7 +355,7 @@ exports.Allowance = function () {
       it('Can jsmith edit forums?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('jsmith', 'forums', 'edit', (err, allow) => {
+        acl.isAllowed('jsmith', 'forums', 'edit').then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -368,7 +366,7 @@ exports.Allowance = function () {
       it('Can jsmith edit blogs?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('jsmith', 'blogs', 'edit', (err, allow) => {
+        acl.isAllowed('jsmith', 'blogs', 'edit').then((allow, err) => {
           assert(!err);
           assert(allow);
           done();
@@ -378,7 +376,7 @@ exports.Allowance = function () {
       it('Can test@test.com edit forums?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('test@test.com', 'forums', 'edit', (err, allow) => {
+        acl.isAllowed('test@test.com', 'forums', 'edit').then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -388,7 +386,7 @@ exports.Allowance = function () {
       it('Can test@test.com edit forums?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('test@test.com', 'forums', 'edit', (err, allow) => {
+        acl.isAllowed('test@test.com', 'forums', 'edit').then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -399,7 +397,7 @@ exports.Allowance = function () {
       it('Can test@test.com edit blogs?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('test@test.com', 'blogs', 'edit', (err, allow) => {
+        acl.isAllowed('test@test.com', 'blogs', 'edit').then((allow, err) => {
           assert(!err);
           assert(allow);
           done();
@@ -409,7 +407,7 @@ exports.Allowance = function () {
       it('Can userId=1 edit blogs?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed(1, 'blogs', 'edit', (err, allow) => {
+        acl.isAllowed('1', 'blogs', 'edit').then((allow, err) => {
           assert(!err);
           assert(allow);
           done();
@@ -419,7 +417,7 @@ exports.Allowance = function () {
       it('Can jsmith edit, delete and clone blogs?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('jsmith', 'blogs', ['edit','view','clone'], (err, allow) => {
+        acl.isAllowed('jsmith', 'blogs', ['edit','view','clone']).then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -429,7 +427,7 @@ exports.Allowance = function () {
       it('Can test@test.com edit, delete and clone blogs?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('test@test.com', 'blogs', ['edit','view','clone'], (err, allow) => {
+        acl.isAllowed('test@test.com', 'blogs', ['edit','view','clone']).then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -439,7 +437,7 @@ exports.Allowance = function () {
       it('Can userId=1 edit, delete and clone blogs?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed(1, 'blogs', ['edit','view','clone'], (err, allow) => {
+        acl.isAllowed('1', 'blogs', ['edit','view','clone']).then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -449,7 +447,7 @@ exports.Allowance = function () {
       it('Can jsmith edit, clone blogs?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('jsmith', 'blogs', ['edit', 'clone'], (err, allow) => {
+        acl.isAllowed('jsmith', 'blogs', ['edit', 'clone']).then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -459,7 +457,7 @@ exports.Allowance = function () {
       it('Can test@test.com edit, clone blogs?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('test@test.com', 'blogs', ['edit', 'clone'], (err, allow) => {
+        acl.isAllowed('test@test.com', 'blogs', ['edit', 'clone']).then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -469,7 +467,7 @@ exports.Allowance = function () {
       it('Can userId=1 edit, delete blogs?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed(1, 'blogs', ['edit', 'clone'], (err, allow) => {
+        acl.isAllowed('1', 'blogs', ['edit', 'clone']).then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -479,7 +477,7 @@ exports.Allowance = function () {
       it('Can james add blogs?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('james', 'blogs', 'add', (err, allow) => {
+        acl.isAllowed('james', 'blogs', 'add').then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -489,7 +487,7 @@ exports.Allowance = function () {
       it('Can userId=3 add blogs?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed(3, 'blogs', 'add', (err, allow) => {
+        acl.isAllowed('3', 'blogs', 'add').then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -499,7 +497,7 @@ exports.Allowance = function () {
       it('Can suzanne add blogs?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('suzanne', 'blogs', 'add', (err, allow) => {
+        acl.isAllowed('suzanne', 'blogs', 'add').then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -509,7 +507,7 @@ exports.Allowance = function () {
       it('Can userId=4 add blogs?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed(4, 'blogs', 'add', (err, allow) => {
+        acl.isAllowed('4', 'blogs', 'add').then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -519,7 +517,7 @@ exports.Allowance = function () {
       it('Can suzanne get blogs?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('suzanne', 'blogs', 'get', (err, allow) => {
+        acl.isAllowed('suzanne', 'blogs', 'get').then((allow, err) => {
           assert(!err);
           assert(allow);
           done();
@@ -529,7 +527,7 @@ exports.Allowance = function () {
       it('Can userId=4 get blogs?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed(4, 'blogs', 'get', (err, allow) => {
+        acl.isAllowed('4', 'blogs', 'get').then((allow, err) => {
           assert(!err);
           assert(allow);
           done();
@@ -539,7 +537,7 @@ exports.Allowance = function () {
       it('Can suzanne delete and put news?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('suzanne', 'news', ['put','delete'], (err, allow) => {
+        acl.isAllowed('suzanne', 'news', ['put','delete']).then((allow, err) => {
           assert(!err);
           assert(allow);
           done();
@@ -549,7 +547,7 @@ exports.Allowance = function () {
       it('Can userId=4 delete and put news?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed(4, 'news', ['put','delete'], (err, allow) => {
+        acl.isAllowed('4', 'news', ['put','delete']).then((allow, err) => {
           assert(!err);
           assert(allow);
           done();
@@ -560,7 +558,7 @@ exports.Allowance = function () {
       it('Can suzanne delete and put forums?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('suzanne', 'forums', ['put','delete'], (err, allow) => {
+        acl.isAllowed('suzanne', 'forums', ['put','delete']).then((allow, err) => {
           assert(!err);
           assert(allow);
           done();
@@ -570,7 +568,7 @@ exports.Allowance = function () {
       it('Can userId=4 delete and put forums?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed(4, 'forums', ['put','delete'], (err, allow) => {
+        acl.isAllowed('4', 'forums', ['put','delete']).then((allow, err) => {
           assert(!err);
           assert(allow);
           done();
@@ -580,7 +578,7 @@ exports.Allowance = function () {
       it('Can nobody view news?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('nobody', 'blogs', 'view', (err, allow) => {
+        acl.isAllowed('nobody', 'blogs', 'view').then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -590,7 +588,7 @@ exports.Allowance = function () {
       it('Can nobody view nothing?', function (done) {
         let acl = new Acl(this.backend);
 
-        acl.isAllowed('nobody', 'nothing', 'view', (err, allow) => {
+        acl.isAllowed('nobody', 'nothing', 'view').then((allow, err) => {
           assert(!err);
           assert(!allow);
           done();
@@ -601,7 +599,7 @@ exports.Allowance = function () {
     describe('allowedPermissions', () => {
       it('What permissions has james over blogs and forums?', function (done) {
         let acl = new Acl(this.backend);
-        acl.allowedPermissions('james', ['blogs','forums'], (err, permissions) => {
+        acl.allowedPermissions('james', ['blogs','forums']).then((permissions, err) => {
           assert(!err);
 
           assert.property(permissions, 'blogs');
@@ -618,7 +616,7 @@ exports.Allowance = function () {
       });
       it('What permissions has userId=3 over blogs and forums?', function (done) {
         let acl = new Acl(this.backend);
-        acl.allowedPermissions(3, ['blogs','forums'], (err, permissions) => {
+        acl.allowedPermissions('3', ['blogs','forums']).then((permissions, err) => {
           assert(!err);
 
           assert.property(permissions, 'blogs');
@@ -645,8 +643,8 @@ exports.WhatResources = function () {
     it('What resources have "bar" some rights on?', function (done) {
       let acl = new Acl(this.backend);
 
-      acl.whatResources('bar', (err, resources) => {
-        assert.isNull(err);
+      acl.whatResources('bar').then((resources, err) => {
+        assert(!err);
         assert.include(resources.blogs, 'view');
         assert.include(resources.blogs, 'delete');
         done();
@@ -656,8 +654,8 @@ exports.WhatResources = function () {
     it('What resources have "bar" view rights on?', function (done) {
       let acl = new Acl(this.backend);
 
-      acl.whatResources('bar', 'view', (err, resources) => {
-        assert.isNull(err);
+      acl.whatResources('bar', 'view').then((resources, err) => {
+        assert(!err);
         assert.include(resources, 'blogs');
         done();
       });
@@ -666,8 +664,8 @@ exports.WhatResources = function () {
     it('What resources have "fumanchu" some rights on?', function (done) {
       let acl = new Acl(this.backend);
 
-      acl.whatResources('fumanchu', (err, resources) => {
-        assert.isNull(err);
+      acl.whatResources('fumanchu').then((resources,err) => {
+        assert(!err);
         assert.include(resources.blogs, 'get');
         assert.include(resources.forums, 'delete');
         assert.include(resources.forums, 'get');
@@ -688,8 +686,8 @@ exports.WhatResources = function () {
     it('What resources have "baz" some rights on?', function (done) {
       let acl = new Acl(this.backend);
 
-      acl.whatResources('baz', (err, resources) => {
-        assert.isNull(err);
+      acl.whatResources('baz').then((resources,err) => {
+        assert(!err);
         assert.include(resources.blogs, 'view');
         assert.include(resources.blogs, 'delete');
         assert.include(resources.blogs, 'edit');
@@ -705,7 +703,7 @@ exports.PermissionRemoval = function () {
   describe('removeAllow', () => {
     it('Remove get permissions from resources blogs and forums from role fumanchu', function (done) {
       let acl = new Acl(this.backend);
-      acl.removeAllow('fumanchu', ['blogs','forums'], 'get', err => {
+      acl.removeAllow('fumanchu', ['blogs','forums'], 'get').then((res,err) => {
         assert(!err);
         done();
       });
@@ -713,7 +711,7 @@ exports.PermissionRemoval = function () {
 
     it('Remove delete and put permissions from resource news from role fumanchu', function (done) {
       let acl = new Acl(this.backend);
-      acl.removeAllow('fumanchu', 'news', 'delete', err => {
+      acl.removeAllow('fumanchu', 'news', 'delete').then((res,err) => {
         assert(!err);
         done();
       });
@@ -721,7 +719,7 @@ exports.PermissionRemoval = function () {
 
     it('Remove view permissions from resource blogs from role bar', function (done) {
       let acl = new Acl(this.backend);
-      acl.removeAllow('bar', 'blogs', 'view', err => {
+      acl.removeAllow('bar', 'blogs', 'view').then((res,err) => {
         assert(!err);
         done();
       });
@@ -731,8 +729,8 @@ exports.PermissionRemoval = function () {
   describe('See if permissions were removed', () => {
     it('What resources have "fumanchu" some rights on after removed some of them?', function (done) {
       let acl = new Acl(this.backend);
-      acl.whatResources('fumanchu', (err, resources) => {
-        assert.isNull(err);
+      acl.whatResources('fumanchu').then((resources, err) => {
+        assert(!err);
 
         assert.isFalse('blogs' in resources);
         assert.property(resources, 'news');
@@ -756,7 +754,7 @@ exports.RoleRemoval = function () {
   describe('removeRole', () => {
     it('Remove role fumanchu', function (done) {
       let acl = new Acl(this.backend);
-      acl.removeRole('fumanchu', err => {
+      acl.removeRole('fumanchu').then((res,err) => {
         assert(!err);
         done();
       });
@@ -764,7 +762,7 @@ exports.RoleRemoval = function () {
 
     it('Remove role member', function (done) {
       let acl = new Acl(this.backend);
-      acl.removeRole('member', err => {
+      acl.removeRole('member').then((res,err) => {
         assert(!err);
         done();
       });
@@ -772,7 +770,7 @@ exports.RoleRemoval = function () {
 
     it('Remove role foo', function (done) {
       let acl = new Acl(this.backend);
-      acl.removeRole('foo', err => {
+      acl.removeRole('foo').then((res,err) => {
         assert(!err);
         done();
       });
@@ -782,7 +780,7 @@ exports.RoleRemoval = function () {
   describe('Was role removed?', () => {
     it('What resources have "fumanchu" some rights on after removed?', function (done) {
       let acl = new Acl(this.backend);
-      acl.whatResources('fumanchu', (err, resources) => {
+      acl.whatResources('fumanchu').then((resources, err) => {
         assert(!err);
         assert(Object.keys(resources).length === 0);
         done();
@@ -791,7 +789,7 @@ exports.RoleRemoval = function () {
 
     it('What resources have "member" some rights on after removed?', function (done) {
       let acl = new Acl(this.backend);
-      acl.whatResources('member', (err, resources) => {
+      acl.whatResources('member').then((resources, err) => {
         assert(!err);
         assert(Object.keys(resources).length === 0);
         done();
@@ -801,7 +799,7 @@ exports.RoleRemoval = function () {
     describe('allowed permissions', () => {
       it('What permissions has jsmith over blogs and forums?', function (done) {
         let acl = new Acl(this.backend);
-        acl.allowedPermissions('jsmith', ['blogs','forums'], (err, permissions) => {
+        acl.allowedPermissions('jsmith', ['blogs','forums']).then((permissions, err) => {
           assert(!err);
           assert(permissions.blogs.length === 0);
           assert(permissions.forums.length === 0);
@@ -811,7 +809,7 @@ exports.RoleRemoval = function () {
 
       it('What permissions has test@test.com over blogs and forums?', function (done) {
         let acl = new Acl(this.backend);
-        acl.allowedPermissions('test@test.com', ['blogs','forums'], (err, permissions) => {
+        acl.allowedPermissions('test@test.com', ['blogs','forums']).then((permissions, err) => {
           assert(!err);
           assert(permissions.blogs.length === 0);
           assert(permissions.forums.length === 0);
@@ -821,7 +819,7 @@ exports.RoleRemoval = function () {
 
       it('What permissions has james over blogs?', function (done) {
         let acl = new Acl(this.backend);
-        acl.allowedPermissions('james', 'blogs', (err, permissions) => {
+        acl.allowedPermissions('james', 'blogs').then((permissions, err) => {
           assert(!err);
           assert.property(permissions, 'blogs');
           assert.include(permissions.blogs, 'delete');
@@ -840,7 +838,7 @@ exports.ResourceRemoval = function () {
   describe('removeResource', () => {
     it('Remove resource blogs', function (done) {
       let acl = new Acl(this.backend);
-      acl.removeResource('blogs', err => {
+      acl.removeResource('blogs').then((res, err) => {
         assert(!err);
         done();
       });
@@ -848,7 +846,7 @@ exports.ResourceRemoval = function () {
 
     it('Remove resource users', function (done) {
       let acl = new Acl(this.backend);
-      acl.removeResource('users', err => {
+      acl.removeResource('users').then((res, err) => {
         assert(!err);
         done();
       });
@@ -858,8 +856,8 @@ exports.ResourceRemoval = function () {
   describe('allowedPermissions', () => {
     it('What permissions has james over blogs?', function (done) {
       let acl = new Acl(this.backend);
-      acl.allowedPermissions('james', 'blogs', (err, permissions) => {
-        assert.isNull(err);
+      acl.allowedPermissions('james', 'blogs').then((permissions, err) => {
+        assert(!err);
         assert.property(permissions, 'blogs');
         assert(permissions.blogs.length === 0);
         done();
@@ -867,7 +865,7 @@ exports.ResourceRemoval = function () {
     });
     it('What permissions has userId=4 over blogs?', function (done) {
       let acl = new Acl(this.backend);
-      acl.allowedPermissions(4, 'blogs').then(permissions => {
+      acl.allowedPermissions('4', 'blogs').then(permissions => {
         assert.property(permissions, 'blogs');
         assert(permissions.blogs.length === 0);
         done();
@@ -878,7 +876,7 @@ exports.ResourceRemoval = function () {
   describe('whatResources', () => {
     it('What resources have "baz" some rights on after removed blogs?', function (done) {
       let acl = new Acl(this.backend);
-      acl.whatResources('baz', (err, resources) => {
+      acl.whatResources('baz').then((resources, err) => {
         assert(!err);
         assert(Object.keys(resources).length === 0);
 
@@ -888,7 +886,7 @@ exports.ResourceRemoval = function () {
 
     it('What resources have "admin" some rights on after removed users resource?', function (done) {
       let acl = new Acl(this.backend);
-      acl.whatResources('admin', (err, resources) => {
+      acl.whatResources('admin').then((resources, err) => {
         assert(!err);
         assert.isFalse('users' in resources);
         assert.isFalse('blogs' in resources);
@@ -907,7 +905,7 @@ exports.UserRoleRemoval = function () {
   describe('Remove user roles', () => {
     it('Remove role guest from joed', function (done) {
       let acl = new Acl(this.backend);
-      acl.removeUserRoles('joed','guest', err => {
+      acl.removeUserRoles('joed','guest').then((res, err) => {
         assert(!err);
         done();
       });
@@ -915,14 +913,14 @@ exports.UserRoleRemoval = function () {
 
     it('Remove role guest from userId=0', function (done) {
       let acl = new Acl(this.backend);
-      acl.removeUserRoles(0,'guest', err => {
+      acl.removeUserRoles('0','guest').then((res, err) => {
         assert(!err);
         done();
       });
     });
     it('Remove role admin from harry', function (done) {
       let acl = new Acl(this.backend);
-      acl.removeUserRoles('harry','admin', err => {
+      acl.removeUserRoles('harry','admin').then((res, err) => {
         assert(!err);
         done();
       });
@@ -930,7 +928,7 @@ exports.UserRoleRemoval = function () {
 
     it('Remove role admin from userId=2', function (done) {
       let acl = new Acl(this.backend);
-      acl.removeUserRoles(2,'admin', err => {
+      acl.removeUserRoles('2','admin').then((res, err) => {
         assert(!err);
         done();
       });
@@ -940,7 +938,7 @@ exports.UserRoleRemoval = function () {
   describe('Were roles removed?', () => {
     it('What permissions has harry over forums and blogs?', function (done) {
       let acl = new Acl(this.backend);
-      acl.allowedPermissions('harry', ['forums','blogs'], (err, permissions) => {
+      acl.allowedPermissions('harry', ['forums','blogs']).then((permissions, err) => {
         assert(!err);
         assert.isObject(permissions);
         assert(permissions.forums.length === 0);
@@ -948,7 +946,7 @@ exports.UserRoleRemoval = function () {
       });
       it('What permissions has userId=2 over forums and blogs?', function (done) {
         let acl = new Acl(this.backend);
-        acl.allowedPermissions(2, ['forums','blogs'], (err, permissions) => {
+        acl.allowedPermissions('2', ['forums','blogs']).then((permissions, err) => {
           assert(!err);
           assert.isObject(permissions);
           assert(permissions.forums.length === 0);
@@ -959,7 +957,7 @@ exports.UserRoleRemoval = function () {
 
     it('What resources have "baz" some rights on after removed blogs?', function (done) {
       let acl = new Acl(this.backend);
-      acl.whatResources('baz', (err, permissions) => {
+      acl.whatResources('baz').then((permissions, err) => {
         assert(!err);
         assert.isObject(permissions);
         assert(Object.keys(permissions).length === 0);
@@ -969,7 +967,7 @@ exports.UserRoleRemoval = function () {
 
     it('What resources have "admin" some rights on after removed users resource?', function (done) {
       let acl = new Acl(this.backend);
-      acl.whatResources('admin', (err, resources) => {
+      acl.whatResources('admin').then((resources, err) => {
         assert(!err);
         assert.isFalse('users' in resources);
         assert.isFalse('blogs' in resources);
@@ -987,26 +985,26 @@ exports.i55PermissionRemoval = function () {
       return acl.addUserRoles('jannette', 'member').then(() => {
         return acl.allow('member', 'blogs', ['view', 'update']);
       }).then(() => {
-        return acl.isAllowed('jannette', 'blogs', 'view', (err, allowed) => {
+        return acl.isAllowed('jannette', 'blogs', 'view').then((allowed, err) => {
           assert(!err);
           expect(allowed).to.be.eql(true);
         });
       }).then(() => {
         return acl.removeAllow('member', 'blogs', 'update');
       }).then(() => {
-        return acl.isAllowed('jannette', 'blogs', 'view', (err, allowed) => {
+        return acl.isAllowed('jannette', 'blogs', 'view').then((allowed, err) => {
           assert(!err);
           expect(allowed).to.be.eql(true);
         });
       }).then(() => {
-        return acl.isAllowed('jannette', 'blogs', 'update', (err, allowed) => {
+        return acl.isAllowed('jannette', 'blogs', 'update').then((allowed, err) => {
           assert(!err);
           expect(allowed).to.be.eql(false);
         });
       }).then(() => {
         return acl.removeAllow('member', 'blogs', 'view');
       }).then(() => {
-        return acl.isAllowed('jannette', 'blogs', 'view', (err, allowed) => {
+        return acl.isAllowed('jannette', 'blogs', 'view').then((allowed, err) => {
           assert(!err);
           expect(allowed).to.be.eql(false);
         });
@@ -1020,7 +1018,7 @@ exports.i32RoleRemoval = function () {
     it('Add roles/resources/permissions', function (done) {
       let acl = new Acl(this.backend);
 
-      acl.allow(['role1', 'role2', 'role3'], ['res1', 'res2', 'res3'], ['perm1', 'perm2', 'perm3'], err => {
+      acl.allow(['role1', 'role2', 'role3'], ['res1', 'res2', 'res3'], ['perm1', 'perm2', 'perm3']).then((res, err) => {
         assert(!err);
         done();
       });
@@ -1029,10 +1027,10 @@ exports.i32RoleRemoval = function () {
     it('Add user roles and parent roles', function (done) {
       let acl = new Acl(this.backend);
 
-        acl.addUserRoles('user1', 'role1', err => {
+        acl.addUserRoles('user1', 'role1').then((res,err) => {
           assert(!err);
 
-          acl.addRoleParents('role1', 'parentRole1', err => {
+          acl.addRoleParents('role1', 'parentRole1').then((res,err) => {
             assert(!err);
             done();
           });
@@ -1042,10 +1040,10 @@ exports.i32RoleRemoval = function () {
     it('Add user roles and parent roles', function (done) {
       let acl = new Acl(this.backend);
 
-        acl.addUserRoles(1, 'role1', err => {
+        acl.addUserRoles('1', 'role1').then((res,err) => {
           assert(!err);
 
-          acl.addRoleParents('role1', 'parentRole1', err => {
+          acl.addRoleParents('role1', 'parentRole1').then((res,err) => {
             assert(!err);
             done();
           });
@@ -1054,11 +1052,11 @@ exports.i32RoleRemoval = function () {
     it('Verify that roles have permissions as assigned', function (done){
       let acl = new Acl(this.backend);
 
-      acl.whatResources('role1', (err, res) => {
+      acl.whatResources('role1').then((res,err) => {
         assert(!err);
         assert.deepEqual(res.res1.sort(), ['perm1', 'perm2', 'perm3']);
 
-        acl.whatResources('role2', (err, res) => {
+        acl.whatResources('role2').then((res,err) => {
           assert(!err);
           assert.deepEqual(res.res1.sort(), ['perm1', 'perm2', 'perm3']);
           done();
@@ -1069,7 +1067,7 @@ exports.i32RoleRemoval = function () {
     it('Remove role "role1"', function (done){
       let acl = new Acl(this.backend);
 
-      acl.removeRole('role1', err => {
+      acl.removeRole('role1').then((res,err) => {
         assert(!err);
         done();
       });
@@ -1078,14 +1076,14 @@ exports.i32RoleRemoval = function () {
     it('Verify that "role1" has no permissions and "role2" has permissions intact', function (done){
       let acl = new Acl(this.backend);
 
-      acl.removeRole('role1', err => {
+      acl.removeRole('role1').then((res,err) => {
         assert(!err);
 
-        acl.whatResources('role1', (err, res) => {
+        acl.whatResources('role1').then((res, err) => {
           assert(!err);
           assert(Object.keys(res).length === 0);
 
-          acl.whatResources('role2', (err, res) => {
+          acl.whatResources('role2').then((res, err) => {
             assert(!err);
             assert.deepEqual(res.res1.sort(), ['perm1', 'perm2', 'perm3']);
             done();

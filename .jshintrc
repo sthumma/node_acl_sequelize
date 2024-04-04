@@ -3,7 +3,7 @@
 	"undef" : true,
 	"unused": true,
 	"strict": true,
-	"esversion": 6,
+	"esversion": 8,
 	"globals"   : {
 		"Promise"   : true,
 		/* MOCHA */

@@ -1,6 +1,6 @@
 {
   "name": "@sthumma/acl-sequelize",
-  "version": "0.4.2",
+  "version": "1.0.0",
   "description": "Node Acl Sequelize Backend",
   "main": "index.js",
   "directories": {
@@ -28,24 +28,24 @@
     "url": "https://github.com/sthumma/node_acl_sequelize/issues"
   },
   "devDependencies": {
-    "acl2": "^3.0.1",
+    "acl2": "^4.0.0",
     "chai": "~4.2.0",
-    "conventional-changelog-cli": "^2.2.2",
-    "eslint": "8.22.0",
-    "eslint-config-prettier": "^8.5.0",
+    "conventional-changelog-cli": "^4.1.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
     "mocha": "^10.0.0",
     "nyc": "^15.1.0",
-    "prettier": "^2.1.0",
+    "prettier": "^3.2.5",
     "sequelize": "^6.25.0",
     "sqlite3": "^5.1.2"
   },
   "homepage": "https://github.com/sthumma/node_acl_sequelize",
   "dependencies": {
-    "lodash": "^4.17.21",
-    "bluebird": "^3.0.2"
+    "bluebird": "^3.0.2",
+    "lodash": "^4.17.21"
   },
   "peerDependencies": {
-    "sequelize": ">=3.0.0",
-    "acl2": "^3.0.1"
+    "acl2": "^4.0.0",
+    "sequelize": ">=3.0.0"
   }
 }
